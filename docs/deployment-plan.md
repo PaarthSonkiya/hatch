@@ -134,15 +134,3 @@ The deployment plan is designed to fail gracefully:
 - If the LoRaWAN gateway fails, nodes buffer up to 24 hours of summaries in flash and re-uplink on reconnection.
 - If a stakeholder objects to a specific node after install, it is removed within 24 hours.
 
----
-
-## 7. End-of-study handover
-
-At the end of Phase 4, the deployment is decommissioned as follows:
-
-- All nodes physically retrieved.
-- Town council and NTU stakeholders provided with a closing report summarising the data collected, alerts generated, and outcomes.
-- The Singapore-specific dataset is anonymised and released under CC-BY 4.0 alongside the technical paper.
-- Hardware retained by the applicant for potential follow-on work.
-
-A small farewell briefing for the town council, if they wish, presents the findings and any recommendations for operational adoption that may follow from the study.
