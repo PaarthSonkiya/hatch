@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HATCH — Operator Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;500&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">HATCH</span>
+    <span class="logo-dot">.</span>
+    <span class="sub">operator console</span>
+  </div>
+  <div class="topmeta">
+    <div class="status">
+      <span class="status-dot ok"></span>
+      <span>10 / 10 nodes online</span>
+    </div>
+    <div class="time" id="liveTime">—</div>
+    <div class="user">jw / NTU EEE</div>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- ============== LEFT: nav + node list ============== -->
+  <aside class="leftpane">
+    <nav class="nav">
+      <a class="active" href="#">Live map</a>
+      <a href="#">Alert history</a>
+      <a href="#">Nodes</a>
+      <a href="#">Sites</a>
+      <a href="#">Settings</a>
+    </nav>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">Active alerts</div>
+        <div class="metric-value alert-color" id="metric-alerts">—</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Sites gated open</div>
+        <div class="metric-value" id="metric-gated">—</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">Mean battery</div>
+        <div class="metric-value" id="metric-batt">—</div>
+      </div>
+    </div>
+
+    <div class="nodelist">
+      <div class="section-title">Nodes <span class="count" id="nodecount">—</span></div>
+      <div class="nodelist-rows" id="nodeRows">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============== CENTRE: map ============== -->
+  <section class="map-pane">
+    <div class="map-header">
+      <div>
+        <div class="map-title">NTU + Jurong West deployment</div>
+        <div class="map-sub">10 nodes · 2 clusters · last 24h activity</div>
+      </div>
+      <div class="legend">
+        <div><span class="dot ok"></span> normal</div>
+        <div><span class="dot warn"></span> gate open</div>
+        <div><span class="dot alert"></span> active alert</div>
+      </div>
+    </div>
+    <div id="map"></div>
+  </section>
+
+  <!-- ============== RIGHT: detail panel ============== -->
+  <aside class="rightpane">
+    <div class="detail" id="detailPanel">
+      <div class="detail-empty">
+        <div class="empty-icon">◯</div>
+        <div>Select a node from the map<br>or list to view detail</div>
+      </div>
+    </div>
+
+    <div class="alertlog">
+      <div class="section-title">Recent alerts</div>
+      <div class="alertlog-rows" id="alertRows">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </aside>
+
+</main>
+
+<footer class="bottombar">
+  <span>HATCH operator console · v0.1.0-pregrant</span>
+  <span class="muted">Pre-grant artifact · NTU ENGenious Sparks 2026 · data shown is simulated</span>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
