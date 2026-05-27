@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HATCH — Source-Reduction Sensors for Aedes Surveillance</title>
+<meta name="description" content="A multi-modal edge-AI sensor network for proactive Aedes aegypti breeding-site detection in Singapore's HDB environment. NTU ENGenious Sparks Grant proposal." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,300..900,0..100&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --paper: #f3ece1;
+  --paper-2: #ebe2d3;
+  --ink: #0c0e0c;
+  --ink-2: #2a2c28;
+  --ink-3: #5a5c54;
+  --rule: #c8bda9;
+  --accent: #b32d1f;       /* arterial red, used sparingly */
+  --accent-2: #1d5e5a;     /* deep teal for water/data */
+  --amber: #c47416;
+  --highlight: #fff5b8;
+  --max: 1240px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Manrope', sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* paper texture */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(120,80,40,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(80,60,40,0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='5'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+}
+
+main, header, footer { position: relative; z-index: 3; }
+
+h1, h2, h3, h4 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink);
+}
+
+a { color: inherit; text-decoration-color: var(--rule); text-underline-offset: 3px; }
+a:hover { text-decoration-color: var(--accent); }
+
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; letter-spacing: 0; }
+
+.container { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+
+/* ============ HEADER ============ */
+.topbar {
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  padding: 18px 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(6px);
+  background: rgba(243, 236, 225, 0.92);
+}
+.topbar-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.topbar-inner .brand { font-weight: 600; }
+.topbar-inner .brand span { color: var(--accent); }
+.topbar-meta { display: flex; gap: 28px; color: var(--ink-3); }
+.topbar-meta span:last-child { color: var(--ink); }
+
+/* ============ HERO ============ */
+.hero { padding: 80px 0 64px; border-bottom: 1px solid var(--rule); }
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: end;
+}
+
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before {
+  content: "";
+  width: 24px; height: 1px;
+  background: var(--accent);
+}
+
+.hero h1 {
+  font-size: clamp(48px, 7.5vw, 104px);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  margin-bottom: 32px;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+}
+.hero h1 .sub {
+  display: block;
+  font-size: 0.35em;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink-2);
+  margin-top: 24px;
+  line-height: 1.3;
+  font-style: italic;
+}
+
+.hero-right { padding-bottom: 8px; }
+.hero-right p {
+  font-size: 18px;
+  color: var(--ink-2);
+  margin-bottom: 20px;
+  max-width: 460px;
+}
+.hero-right .stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--rule);
+}
+.stat .num {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.stat .num .small { font-size: 0.55em; vertical-align: super; opacity: 0.6; }
+.stat .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  line-height: 1.4;
+}
+
+/* ============ SECTIONS ============ */
+section { padding: 96px 0; border-bottom: 1px solid var(--rule); }
+
+.section-head {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  margin-bottom: 56px;
+  align-items: start;
+}
+.section-head .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 14px;
+  border-top: 1px solid var(--ink);
+}
+.section-head h2 {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  max-width: 900px;
+}
+.section-head h2 em { font-style: italic; color: var(--accent); font-weight: 300; }
+
+.section-body {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+}
+.section-body .aside {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  line-height: 1.6;
+}
+.section-body .body { max-width: 740px; }
+.section-body .body p { margin-bottom: 24px; font-size: 17px; }
+.section-body .body p:first-of-type::first-letter {
+  font-family: 'Fraunces', serif;
+  font-size: 64px;
+  font-weight: 400;
+  float: left;
+  line-height: 0.85;
+  margin: 6px 12px 0 0;
+  color: var(--accent);
+}
+.section-body .body p strong { font-weight: 600; }
+.section-body .body p mark {
+  background: var(--highlight);
+  padding: 0 4px;
+  color: var(--ink);
+}
+
+/* ============ PROBLEM SECTION CHARTS ============ */
+.chart-block {
+  margin-top: 48px;
+  padding: 40px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  position: relative;
+}
+.chart-block .caption {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Bar chart */
+.bars { display: flex; align-items: flex-end; gap: 8px; height: 220px; padding: 16px 0; border-bottom: 1px solid var(--ink); }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.bar {
+  width: 100%;
+  background: var(--ink);
+  position: relative;
+  transition: background 0.3s;
+}
+.bar.peak { background: var(--accent); }
+.bar.peak::after {
+  content: "PEAK";
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+.bar-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ink-2);
+  margin-top: 4px;
+}
+.bar-yr {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--ink-3);
+}
+
+/* ============ APPROACH GRID ============ */
+.approach-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-top: 48px;
+}
+.approach-card {
+  background: var(--paper);
+  padding: 40px;
+}
+.approach-card .step {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.approach-card h3 {
+  font-size: 28px;
+  margin-bottom: 16px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+.approach-card h3 em { font-style: italic; color: var(--ink-3); font-weight: 300; }
+.approach-card p {
+  font-size: 15px;
+  color: var(--ink-2);
+  margin-bottom: 16px;
+}
+.approach-card .specs {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.8;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+.approach-card .specs span::before { content: "→ "; color: var(--accent); }
+
+/* ============ ARCHITECTURE DIAGRAM ============ */
+.arch {
+  margin-top: 48px;
+  padding: 56px 40px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
+  overflow-x: auto;
+}
+.arch svg { width: 100%; height: auto; max-width: 1000px; margin: 0 auto; display: block; }
+
+/* ============ TIMELINE ============ */
+.timeline { margin-top: 48px; }
+.tl-row {
+  display: grid;
+  grid-template-columns: 120px 80px 1fr;
+  gap: 32px;
+  padding: 28px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: start;
+}
+.tl-row:first-child { border-top: 1px solid var(--ink); }
+.tl-month {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  font-weight: 600;
+}
+.tl-phase {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.tl-content h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 21px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+.tl-content p { font-size: 15px; color: var(--ink-2); }
+
+/* ============ PRIOR ART TABLE ============ */
+.prior-table {
+  margin-top: 32px;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.prior-table th, .prior-table td {
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+.prior-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--ink);
+  font-weight: 500;
+}
+.prior-table .work { font-family: 'Fraunces', serif; font-size: 17px; font-style: italic; font-weight: 500; }
+.prior-table .gap { color: var(--accent); font-weight: 500; }
+
+/* ============ BUDGET ============ */
+.budget-table {
+  margin-top: 32px;
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+.budget-table th, .budget-table td {
+  text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule);
+}
+.budget-table th {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--ink);
+}
+.budget-table .amt { text-align: right; }
+.budget-table tfoot td {
+  border-top: 2px solid var(--ink);
+  border-bottom: none;
+  font-weight: 600;
+  padding-top: 18px;
+}
+.budget-table .cat { color: var(--ink); font-weight: 500; }
+
+/* ============ DELIVERABLES GRID ============ */
+.deliv-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+.deliv {
+  padding: 28px;
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  transition: all 0.2s;
+}
+.deliv:hover { background: var(--paper); border-color: var(--ink); transform: translateY(-2px); }
+.deliv .icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.deliv h4 {
+  font-family: 'Fraunces', serif;
+  font-size: 19px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+.deliv p { font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+
+/* ============ FOOTER ============ */
+footer {
+  padding: 64px 0 48px;
+  background: var(--ink);
+  color: var(--paper);
+  position: relative;
+  z-index: 3;
+}
+footer .container { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 48px; }
+footer h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--paper-2);
+  opacity: 0.6;
+  margin-bottom: 16px;
+}
+footer .brand-block .title {
+  font-family: 'Fraunces', serif;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  color: var(--paper);
+}
+footer .brand-block .title em { color: #d8b4fe; font-style: italic; }
+footer .brand-block p { font-size: 14px; color: var(--paper-2); opacity: 0.7; max-width: 380px; }
+footer ul { list-style: none; }
+footer li { padding: 4px 0; font-family: 'JetBrains Mono', monospace; font-size: 12px; opacity: 0.85; }
+footer li a { color: var(--paper); }
+
+.footer-meta {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--paper-2);
+  opacity: 0.5;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ============ DECORATIVE MOSQUITO ============ */
+.deco-mosquito {
+  position: absolute;
+  top: 60px;
+  right: -40px;
+  width: 280px;
+  opacity: 0.08;
+  pointer-events: none;
+  transform: rotate(-15deg);
+}
+
+/* ============ ANIMATIONS ============ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero h1, .hero-right { animation: fadeUp 0.9s ease-out both; }
+.hero-right { animation-delay: 0.15s; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .section-head, .section-body { grid-template-columns: 1fr; gap: 24px; }
+  .approach-grid { grid-template-columns: 1fr; }
+  .deliv-grid { grid-template-columns: 1fr; }
+  footer .container { grid-template-columns: 1fr; }
+  .topbar-meta { display: none; }
+  .deco-mosquito { display: none; }
+  section { padding: 64px 0; }
+  .hero { padding: 48px 0; }
+  .container { padding: 0 24px; }
+  .tl-row { grid-template-columns: 1fr; gap: 12px; }
+  .chart-block, .arch { padding: 24px; }
+  .hero-right .stat-row { gap: 16px; }
+  .stat .num { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============== TOP BAR ============== -->
+<header class="topbar">
+  <div class="container topbar-inner">
+    <div class="brand">HATCH<span>.</span></div>
+    <div class="topbar-meta">
+      <span>NTU ENGENIOUS SPARKS</span>
+      <span>2026 — Y1 EEE PROPOSAL</span>
+    </div>
+  </div>
+</header>
+
+<!-- ============== HERO ============== -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">Project Hatch / Pre-grant Brief</div>
+      <h1>
+        Catch breeding sites <em>before</em> they hatch.
+        <span class="sub">A multi-modal edge-AI sensor network for proactive <em>Aedes aegypti</em> source reduction in Singapore's HDB environment.</span>
+      </h1>
+    </div>
+    <div class="hero-right">
+      <p>Singapore's dengue control program is among the world's most sophisticated, yet the country still recorded 13,655 cases and 17 deaths in 2024 alone. Hatch closes the gap between weekly manual surveillance and the 5–7 day window an Aedes egg needs to become a biting adult.</p>
+      <div class="stat-row">
+        <div class="stat">
+          <div class="num">13,655</div>
+          <div class="lbl">Dengue cases<br>Singapore, 2024</div>
+        </div>
+        <div class="stat">
+          <div class="num">64K<span class="small">+</span></div>
+          <div class="lbl">NEA Gravitraps<br>deployed island-wide</div>
+        </div>
+        <div class="stat">
+          <div class="num">5–7<span class="small">d</span></div>
+          <div class="lbl">Egg-to-adult<br>detection window</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 01. PROBLEM ============== -->
+<section id="problem">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">01 / Problem</div>
+      <h2>A surveillance system designed to <em>count adults</em>, not catch breeding early.</h2>
+    </div>
+    <div class="section-body">
+      <div class="aside">
+        Endemic disease<br>
+        Public health priority<br>
+        Source reduction gap
+      </div>
+      <div class="body">
+        <p>Dengue is endemic in Singapore. The National Environment Agency (NEA) operates one of the most sophisticated vector-control programs in the world — over 64,000 Gravitraps deployed at roughly one per twenty households, weekly manual species identification, the Wolbachia release program, GIS-based risk mapping, and inter-agency dengue task forces.</p>
+
+        <p>And yet, the country recorded more than 13,000 cases in 2024 with 17 deaths, and saw a peak outbreak above 35,000 cases in 2020. The economic cost of dengue to Singapore from 2010–2020 has been estimated at SGD 148 million. The reason this happens despite the surveillance is structural: <strong>existing tools count adult mosquitoes after they have already emerged.</strong></p>
+
+        <p>An <em>Aedes aegypti</em> egg can develop into a biting adult in as little as <mark>5–7 days under Singapore's tropical conditions</mark>. The Gravitrap network samples weekly. Source-reduction inspections by NEA officers are driven by complaints or by Gravitrap signals that are already 7–14 days behind the breeding event. By the time a hotspot is flagged, the next generation is already biting.</p>
+
+        <p>What Singapore's program lacks is not surveillance. It is <strong>a continuous, hyper-local, breeding-site-level signal</strong> — one that can tell a town council "this drain has been stagnant for four days, conditions are favorable, and we are now hearing Aedes activity around it" before the next generation emerges.</p>
+      </div>
+    </div>
+
+    <div class="chart-block">
+      <div class="caption">
+        <span>Fig. 1 — Reported dengue cases, Singapore (2018–2025)</span>
+        <span>Sources: NEA, MOH, Statista</span>
+      </div>
+      <div class="bars">
+        <div class="bar-col">
+          <div class="bar" style="height: 9%;"></div>
+          <div class="bar-val">3,282</div>
+          <div class="bar-yr">2018</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar" style="height: 44%;"></div>
+          <div class="bar-val">15,998</div>
+          <div class="bar-yr">2019</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar peak" style="height: 95%;"></div>
+          <div class="bar-val">35,315</div>
+          <div class="bar-yr">2020</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar" style="height: 15%;"></div>
+          <div class="bar-val">5,258</div>
+          <div class="bar-yr">2021</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar" style="height: 36%;"></div>
+          <div class="bar-val">13,114</div>
+          <div class="bar-yr">2022</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar" style="height: 27%;"></div>
+          <div class="bar-val">9,949</div>
+          <div class="bar-yr">2023</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar" style="height: 37%;"></div>
+          <div class="bar-val">13,655</div>
+          <div class="bar-yr">2024</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar" style="height: 11%;"></div>
+          <div class="bar-val">~4,000</div>
+          <div class="bar-yr">2025</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 02. INSIGHT ============== -->
+<section id="insight">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">02 / Insight</div>
+      <h2>Stop asking <em>"did I hear a mosquito?"</em> Start asking <em>"is this site producing one?"</em></h2>
+    </div>
+    <div class="section-body">
+      <div class="aside">
+        Multi-modal fusion<br>
+        Conditional inference<br>
+        Source-reduction native
+      </div>
+      <div class="body">
+        <p>Acoustic mosquito classification is a crowded research area. Multiple groups since 2022 — Altayeb, Zennaro & Rovai; Kimutai & Förster; the MosquIoT team; the HumBug Project at Oxford; the VECTRACK commercial system in Portugal — have demonstrated TinyML or smartphone-based wingbeat classification at 90–94% accuracy. The basic question of <em>"can a microcontroller distinguish Aedes from Culex from sound?"</em> is answered.</p>
+
+        <p>But every one of these systems treats acoustic detection as the <strong>primary signal</strong>, which forces them to fight two losing battles: high false-positive rates in noisy outdoor environments, and disconnection from any actionable intervention — knowing a mosquito flew by tells you nothing about where it came from.</p>
+
+        <p>Hatch reframes the problem. We use <strong>environmental sensing as the primary signal</strong> — water presence, stagnation duration, temperature — and <strong>acoustic ML as confirmation</strong>. The device only listens when conditions are favorable for breeding. A high-confidence alert requires both modalities to agree: <em>stagnant water present for at least N days at favorable temperature, AND Aedes wingbeats detected nearby.</em></p>
+
+        <p>This shift has three consequences. First, the false-positive rate collapses, because a single noisy chirp does not trigger an alert; the environmental gate must be open. Second, the alert itself is actionable — it identifies a <em>specific breeding site</em>, not just an area where mosquitoes were heard. Third, the system aligns with NEA's stated doctrine that source reduction is the key strategy, rather than competing with the Gravitrap network for the same data NEA already collects.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 03. APPROACH ============== -->
+<section id="approach">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">03 / Approach</div>
+      <h2>Two sensing modes. <em>One</em> high-confidence alert.</h2>
+    </div>
+
+    <div class="approach-grid">
+      <div class="approach-card">
+        <div class="step">Mode 01 — Always-on</div>
+        <h3>Environmental Watch <em>/ μW class</em></h3>
+        <p>The node sleeps for 99% of the time, waking every 5 minutes to sample its environmental state. A capacitive sensor reports water presence; a stagnation timer accumulates dry-flow intervals; a BME280 reports temperature and humidity. Together they compute a breeding-favorability score on-device.</p>
+        <div class="specs">
+          <span>ESP32-S3 in deep-sleep, ~50 μA average</span>
+          <span>Capacitive water-presence + flow timer</span>
+          <span>BME280 (T, RH, P)</span>
+          <span>Breeding score updates every 5 min</span>
+        </div>
+      </div>
+      <div class="approach-card">
+        <div class="step">Mode 02 — Triggered</div>
+        <h3>Acoustic Confirmation <em>/ TinyML</em></h3>
+        <p>When the favorability score crosses threshold, the node wakes its INMP441 microphone and runs a quantized 1D-CNN trained on the HumBug wingbeat corpus, fine-tuned on Singapore field recordings. Optional hydrophone monitors larval surfacing activity. Detection only counts as an alert when both modes concur.</p>
+        <div class="specs">
+          <span>INMP441 MEMS mic, 16kHz sampling</span>
+          <span>~40KB INT8 1D-CNN, &lt; 200ms inference</span>
+          <span>Optional piezo hydrophone, drain-mounted</span>
+          <span>Alert = ENV ∧ ACOUSTIC</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch">
+      <svg viewBox="0 0 1000 460" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#0c0e0c"/>
+          </marker>
+          <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L9,3 z" fill="#b32d1f"/>
+          </marker>
+        </defs>
+
+        <!-- Background sections -->
+        <rect x="20" y="20" width="280" height="240" fill="none" stroke="#c8bda9" stroke-dasharray="4,4"/>
+        <text x="30" y="38" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.5" fill="#5a5c54">EDGE NODE — IN-FIELD</text>
+
+        <rect x="380" y="20" width="240" height="240" fill="none" stroke="#c8bda9" stroke-dasharray="4,4"/>
+        <text x="390" y="38" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.5" fill="#5a5c54">LORAWAN GATEWAY</text>
+
+        <rect x="700" y="20" width="280" height="240" fill="none" stroke="#c8bda9" stroke-dasharray="4,4"/>
+        <text x="710" y="38" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.5" fill="#5a5c54">CLOUD / DASHBOARD</text>
+
+        <!-- Edge sensors -->
+        <rect x="40" y="60" width="120" height="42" fill="#f3ece1" stroke="#0c0e0c"/>
+        <text x="100" y="80" text-anchor="middle" font-family="Manrope, sans-serif" font-size="12" font-weight="600">Capacitive H₂O</text>
+        <text x="100" y="94" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a5c54">presence + level</text>
+
+        <rect x="170" y="60" width="120" height="42" fill="#f3ece1" stroke="#0c0e0c"/>
+        <text x="230" y="80" text-anchor="middle" font-family="Manrope, sans-serif" font-size="12" font-weight="600">BME280</text>
+        <text x="230" y="94" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a5c54">T / RH / P</text>
+
+        <rect x="40" y="115" width="120" height="42" fill="#f3ece1" stroke="#0c0e0c"/>
+        <text x="100" y="135" text-anchor="middle" font-family="Manrope, sans-serif" font-size="12" font-weight="600">INMP441</text>
+        <text x="100" y="149" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a5c54">acoustic mic</text>
+
+        <rect x="170" y="115" width="120" height="42" fill="#f3ece1" stroke="#0c0e0c"/>
+        <text x="230" y="135" text-anchor="middle" font-family="Manrope, sans-serif" font-size="12" font-weight="600">Piezo hydro.</text>
+        <text x="230" y="149" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a5c54">larval surfacing</text>
+
+        <!-- ESP32 brain -->
+        <rect x="40" y="180" width="250" height="62" fill="#0c0e0c"/>
+        <text x="165" y="202" text-anchor="middle" font-family="Fraunces, serif" font-size="16" fill="#f3ece1" font-style="italic">ESP32-S3 / TinyML core</text>
+        <text x="165" y="220" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f3ece1" opacity="0.7">env. gate · INT8 CNN · LoRa</text>
+        <text x="165" y="232" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#b32d1f">ALERT = ENV ∧ ACOUSTIC</text>
+
+        <!-- Arrows from sensors to ESP -->
+        <line x1="100" y1="102" x2="100" y2="178" stroke="#0c0e0c" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="230" y1="102" x2="230" y2="178" stroke="#0c0e0c" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="100" y1="157" x2="100" y2="178" stroke="#0c0e0c" stroke-width="1" marker-end="url(#arrow)"/>
+        <line x1="230" y1="157" x2="230" y2="178" stroke="#0c0e0c" stroke-width="1" marker-end="url(#arrow)"/>
+
+        <!-- Edge -> Gateway -->
+        <line x1="290" y1="211" x2="380" y2="211" stroke="#b32d1f" stroke-width="1.5" marker-end="url(#arrow-red)" stroke-dasharray="2,3"/>
+        <text x="335" y="205" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#b32d1f">LoRa</text>
+
+        <!-- Gateway -->
+        <rect x="410" y="120" width="180" height="100" fill="#1d5e5a"/>
+        <text x="500" y="156" text-anchor="middle" font-family="Fraunces, serif" font-size="16" fill="#f3ece1" font-style="italic">RAK7268V2 / </text>
+        <text x="500" y="174" text-anchor="middle" font-family="Fraunces, serif" font-size="16" fill="#f3ece1" font-style="italic">campus gateway</text>
+        <text x="500" y="195" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f3ece1" opacity="0.75">multi-node aggregator</text>
+
+        <!-- Gateway -> Cloud -->
+        <line x1="590" y1="170" x2="700" y2="170" stroke="#0c0e0c" stroke-width="1" marker-end="url(#arrow)"/>
+        <text x="645" y="164" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a5c54">MQTT / HTTPS</text>
+
+        <!-- Cloud -->
+        <rect x="720" y="60" width="240" height="42" fill="#f3ece1" stroke="#0c0e0c"/>
+        <text x="840" y="80" text-anchor="middle" font-family="Manrope, sans-serif" font-size="12" font-weight="600">Time-series DB</text>
+        <text x="840" y="94" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a5c54">InfluxDB / TimescaleDB</text>
+
+        <rect x="720" y="115" width="240" height="42" fill="#f3ece1" stroke="#0c0e0c"/>
+        <text x="840" y="135" text-anchor="middle" font-family="Manrope, sans-serif" font-size="12" font-weight="600">Risk scoring</text>
+        <text x="840" y="149" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#5a5c54">block-level aggregation</text>
+
+        <rect x="720" y="170" width="240" height="72" fill="#b32d1f"/>
+        <text x="840" y="200" text-anchor="middle" font-family="Fraunces, serif" font-size="16" fill="#f3ece1" font-style="italic">Town council dashboard</text>
+        <text x="840" y="220" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#f3ece1" opacity="0.85">alerts · heatmap · history</text>
+
+        <!-- Bottom labels -->
+        <text x="500" y="380" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="14" fill="#5a5c54">Hatch system architecture — single-node to dashboard data path</text>
+        <line x1="200" y1="395" x2="800" y2="395" stroke="#c8bda9" stroke-width="1"/>
+        <text x="500" y="420" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.5" fill="#5a5c54">FIG. 2 / EDGE → GATEWAY → CLOUD</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 04. PRIOR ART ============== -->
+<section id="prior">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">04 / Prior Art</div>
+      <h2>What's been built, <em>what hasn't</em>, and where Hatch fits.</h2>
+    </div>
+    <div class="section-body">
+      <div class="aside">
+        Systematic review<br>
+        2018 → 2026<br>
+        Gap identification
+      </div>
+      <div class="body">
+        <p>Below is a condensed map of the most relevant prior art across acoustic mosquito surveillance, environmental breeding-site sensing, and Singapore-specific dengue control. Each entry below has a corresponding annotated bibliography in <span class="mono">/docs/literature-review.md</span>.</p>
+      </div>
+    </div>
+
+    <table class="prior-table">
+      <thead>
+        <tr>
+          <th style="width: 28%;">Work</th>
+          <th style="width: 14%;">Year</th>
+          <th style="width: 28%;">Contribution</th>
+          <th style="width: 30%;">Gap Hatch fills</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="work">Altayeb, Zennaro & Rovai — TinyML wingbeat classifier</td>
+          <td class="mono">2022</td>
+          <td>94% accuracy distinguishing Aedes spp. on Arduino-class MCUs with LoRaWAN.</td>
+          <td class="gap">No environmental context; acoustic-only signal triggers continuously.</td>
+        </tr>
+        <tr>
+          <td class="work">HumBug Project (Oxford) — Sinka et al.</td>
+          <td class="mono">2021</td>
+          <td>Smartphone-based acoustic capture; 6,900+ wild mosquito recordings, six genera.</td>
+          <td class="gap">Dataset to be reused; deployment model assumes human in the loop.</td>
+        </tr>
+        <tr>
+          <td class="work">VECTRACK (IRIDEON) commercial sensor</td>
+          <td class="mono">2024</td>
+          <td>Bioacoustic mosquito ID integrated with Biogents traps; field-deployed across Portugal.</td>
+          <td class="gap">Single-modal; expensive per-unit; trap-coupled, not ambient.</td>
+        </tr>
+        <tr>
+          <td class="work">MosquIoT — IoT ovitrap + FOMO egg detection</td>
+          <td class="mono">2024</td>
+          <td>Computer vision on edge for Aedes egg counting in ovitraps; tested in Argentina.</td>
+          <td class="gap">Visual-only; still requires deploying a managed trap.</td>
+        </tr>
+        <tr>
+          <td class="work">NEA Gravitrap Network</td>
+          <td class="mono">2013–</td>
+          <td>64,000+ sticky traps, weekly manual identification; GAI risk index.</td>
+          <td class="gap">7–14 day latency by design; counts adults, not breeding events.</td>
+        </tr>
+        <tr>
+          <td class="work">MosquitoSong+ — noise-robust DL model</td>
+          <td class="mono">2024</td>
+          <td>Deep CNN robust to outdoor noise; species + sex; >80% in noisy conditions.</td>
+          <td class="gap">Not yet deployed on microcontroller-class hardware.</td>
+        </tr>
+        <tr style="background: #fff5b8;">
+          <td class="work">Hatch <em>(this project)</em></td>
+          <td class="mono">2026—</td>
+          <td><strong>Multi-modal sensor fusion at breeding-site location; environment as primary signal; acoustic as confirmation; conditional-inference power gating.</strong></td>
+          <td class="gap">— novel —</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============== 05. ROADMAP ============== -->
+<section id="roadmap">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">05 / Roadmap</div>
+      <h2>Twelve months. <em>Three</em> phases. Demonstrable deliverables at each gate.</h2>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-month">M01 – M03</div>
+        <div class="tl-phase">Phase 1<br>Bench prototype</div>
+        <div class="tl-content">
+          <h4>Single-node v0 on the bench</h4>
+          <p>Component selection, firmware skeleton on ESP32-S3, sensor characterization in lab conditions, baseline TinyML model trained on HumBug data via Edge Impulse. Gate: a node powered from solar that wakes on env. trigger and runs acoustic inference on a recorded sample.</p>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-month">M04 – M06</div>
+        <div class="tl-phase">Phase 2<br>Enclosure + comms</div>
+        <div class="tl-content">
+          <h4>Field-ready hardware</h4>
+          <p>IP66 enclosure, weatherproof connectors for capacitive probe and hydrophone, LoRaWAN integration with a campus gateway, time-series backend, dashboard MVP. Gate: three nodes operating outdoors for two weeks unattended.</p>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-month">M07 – M09</div>
+        <div class="tl-phase">Phase 3<br>Field study</div>
+        <div class="tl-content">
+          <h4>Pilot deployment</h4>
+          <p>Deployment of 10 nodes across selected NTU and adjacent HDB locations with town-council coordination. Field data collection for SG-specific fine-tuning of acoustic model. Gate: validated alert pipeline with at least one confirmed-and-acted-upon breeding site.</p>
+        </div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-month">M10 – M12</div>
+        <div class="tl-phase">Phase 4<br>Dissemination</div>
+        <div class="tl-content">
+          <h4>Paper, competition, open-source release</h4>
+          <p>Technical report + dataset release; submission to James Dyson Award, IEEE R10 Humanitarian Tech, Asia Smart App Challenge; public open-source release of firmware, hardware files, and dashboard. Gate: at least one external competition entry submitted.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== 06. BUDGET ============== -->
+<section id="budget">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">06 / Budget</div>
+      <h2>SGD <em>10,000</em>. Built for efficiency, sized for ten field nodes.</h2>
+    </div>
+    <div class="section-body">
+      <div class="aside">
+        Hardware first<br>
+        Field validation<br>
+        Conservative buffer
+      </div>
+      <div class="body">
+        <p>The budget is dimensioned to produce <strong>ten fully-instrumented field nodes plus one LoRaWAN gateway</strong>, with margin reserved for enclosure iteration, deployment-site materials (mounting hardware, cable glands), competition fees, and a small contingency. A detailed bill of materials lives in <span class="mono">/hardware/bom.md</span>.</p>
+      </div>
+    </div>
+
+    <table class="budget-table">
+      <thead>
+        <tr><th>Category</th><th>Detail</th><th class="amt">Amount (SGD)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="cat">Sensor nodes ×10</td><td>ESP32-S3 + INMP441 + BME280 + capacitive + piezo + PMIC + LiPo + 5W solar</td><td class="amt">2,800</td></tr>
+        <tr><td class="cat">LoRaWAN gateway</td><td>RAK7268V2 indoor gateway + antenna + PoE injector</td><td class="amt">650</td></tr>
+        <tr><td class="cat">Enclosures + mounts</td><td>IP66 housings, cable glands, drain-mount fixtures, 3D-printed iteration</td><td class="amt">900</td></tr>
+        <tr><td class="cat">PCB fabrication</td><td>Two design revisions, JLCPCB + assembly, 30 boards</td><td class="amt">1,100</td></tr>
+        <tr><td class="cat">Lab + test equipment</td><td>Reference mic + calibrator (NTU), audio interface, mosquito reference recordings (data acquisition trip)</td><td class="amt">800</td></tr>
+        <tr><td class="cat">Cloud + tooling</td><td>12mo TimescaleDB on cloud, Edge Impulse Pro, domain + hosting</td><td class="amt">700</td></tr>
+        <tr><td class="cat">Competition + travel</td><td>James Dyson Award fee, IEEE R10 submission, local travel for deployment sites</td><td class="amt">1,400</td></tr>
+        <tr><td class="cat">Consumables + spares</td><td>Sensors, cables, connectors, 10% spare unit ratio</td><td class="amt">700</td></tr>
+        <tr><td class="cat">Contingency</td><td>Reserved for component obsolescence + tariff fluctuation</td><td class="amt">950</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2">Total</td><td class="amt">10,000</td></tr>
+      </tfoot>
+    </table>
+  </div>
+</section>
+
+<!-- ============== 07. DELIVERABLES ============== -->
+<section id="deliverables">
+  <div class="container">
+    <div class="section-head">
+      <div class="num">07 / Repository</div>
+      <h2>What this repo <em>already</em> contains, today.</h2>
+    </div>
+    <div class="section-body">
+      <div class="aside">
+        Pre-grant work<br>
+        Working artifacts<br>
+        Open-source ready
+      </div>
+      <div class="body">
+        <p>The materials below are not promises — they are pre-grant work already in this repository. The grant funds field hardware and deployment, not the design and research, which have been completed at zero cost prior to submission.</p>
+      </div>
+    </div>
+
+    <div class="deliv-grid">
+      <div class="deliv">
+        <div class="icon">/ docs / 01</div>
+        <h4>Technical Whitepaper</h4>
+        <p>~6,000-word document covering problem framing, prior-art review, system architecture, signal-processing pipeline, and validation plan.</p>
+      </div>
+      <div class="deliv">
+        <div class="icon">/ docs / 02</div>
+        <h4>Literature Review</h4>
+        <p>Annotated bibliography of 25+ papers across acoustic mosquito ID, breeding-site sensing, and dengue surveillance in Southeast Asia.</p>
+      </div>
+      <div class="deliv">
+        <div class="icon">/ firmware</div>
+        <h4>ESP32-S3 Firmware Skeleton</h4>
+        <p>PlatformIO project with sensor drivers, deep-sleep management, env-gate logic, TinyML inference stub, and LoRa transmission.</p>
+      </div>
+      <div class="deliv">
+        <div class="icon">/ ml</div>
+        <h4>ML Training Pipeline</h4>
+        <p>Python notebooks for HumBug data exploration, mel-spectrogram preprocessing, and 1D-CNN training with INT8 quantization for MCU deployment.</p>
+      </div>
+      <div class="deliv">
+        <div class="icon">/ dashboard</div>
+        <h4>Operator Dashboard MVP</h4>
+        <p>Working web prototype: heatmap of node risk scores, per-node history, alert log, designed for town-council operator workflows.</p>
+      </div>
+      <div class="deliv">
+        <div class="icon">/ hardware</div>
+        <h4>Hardware BOM &amp; Schematic Plan</h4>
+        <p>Component-level bill of materials with sourcing notes, schematic block diagram, power budget, and enclosure design notes.</p>
+      </div>
+      <div class="deliv">
+        <div class="icon">/ docs / 03</div>
+        <h4>Field Deployment Plan</h4>
+        <p>Candidate site survey for NTU/HDB pilot zones, stakeholder engagement plan for town councils, and ethics/permissioning checklist.</p>
+      </div>
+      <div class="deliv">
+        <div class="icon">/ docs / 04</div>
+        <h4>Risk Register</h4>
+        <p>Itemised technical and operational risks (ML field drift, weatherproofing, regulatory) with mitigations and contingency plans.</p>
+      </div>
+      <div class="deliv">
+        <div class="icon">/ docs / 05</div>
+        <h4>Competition Brief</h4>
+        <p>Tailored submission outlines for James Dyson Award, IEEE R10 HTC, Asia Smart App Challenge, and NEA innovation challenges.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="container">
+    <div class="brand-block">
+      <div class="title">HATCH<em>.</em></div>
+      <p>Multi-modal edge-AI sensors for proactive Aedes source reduction. Proposed under the NTU College of Engineering ENGenious Sparks Grant, 2026.</p>
+    </div>
+    <div>
+      <h4>Repository</h4>
+      <ul>
+        <li><a href="../README.md">README.md</a></li>
+        <li><a href="../docs/whitepaper.md">Whitepaper</a></li>
+        <li><a href="../docs/literature-review.md">Literature Review</a></li>
+        <li><a href="../docs/deployment-plan.md">Deployment Plan</a></li>
+        <li><a href="../docs/risk-register.md">Risk Register</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Build</h4>
+      <ul>
+        <li><a href="../firmware/">Firmware</a></li>
+        <li><a href="../ml/">ML Pipeline</a></li>
+        <li><a href="../dashboard/">Dashboard</a></li>
+        <li><a href="../hardware/bom.md">Hardware BOM</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-meta">
+    <span>NTU EEE Y1 / Entrepreneurship 2nd major</span>
+    <span>Pre-grant artifact — May 2026</span>
+  </div>
+</footer>
+
+</body>
+</html>
