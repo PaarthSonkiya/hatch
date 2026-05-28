@@ -108,7 +108,7 @@ This pipeline is conventional IoT plumbing; the novelty sits at the edge node, n
 
 ---
 
-## Hardware at a glance
+## Hardware 
 
 | Component | Part | Role |
 |---|---|---|
@@ -125,7 +125,7 @@ Detailed selection rationale, alternates, and unit cost in [hardware/bom.md](./h
 
 ---
 
-## Software at a glance
+## Software
 
 **Firmware** (`/firmware`): PlatformIO project targeting Arduino-ESP32 framework. Uses `esp_sleep` for deep sleep, `driver/i2s` for the INMP441, and TensorFlow Lite Micro for inference. Implements an event-loop state machine: `SLEEP → ENV_SAMPLE → ENV_GATE → ACOUSTIC_CAPTURE → INFERENCE → TX → SLEEP`.
 
@@ -133,22 +133,6 @@ Detailed selection rationale, alternates, and unit cost in [hardware/bom.md](./h
 
 **Dashboard** (`/dashboard`): Static HTML/JS prototype using Leaflet for the map layer and Chart.js for time-series. Reads from a mocked JSON endpoint; production version backed by TimescaleDB query API.
 
----
-
-## What's in this repo as of grant submission
-
-This repository was built **before** grant submission as a pre-grant artifact. None of the items below required the grant — they were completed at zero hardware cost using open datasets, simulation, and design work.
-
-- ✅ Full system whitepaper with prior-art analysis and signal-processing pipeline design
-- ✅ Annotated literature review of 25+ papers
-- ✅ Firmware skeleton compilable under PlatformIO (no hardware required to build)
-- ✅ ML training pipeline runnable on a laptop using publicly available HumBug data
-- ✅ Working dashboard prototype with mock data
-- ✅ Component-level hardware BOM with sourcing and power budget
-- ✅ Field deployment plan with candidate sites and stakeholder workflow
-- ✅ Risk register and competition brief
-
-**What the grant funds:** hardware (10 field nodes + gateway), enclosure iteration, PCB fabrication runs, field deployment costs, competition fees, and the cloud/tooling subscriptions needed for the 12-month field study.
 
 ---
 
@@ -164,35 +148,3 @@ This repository was built **before** grant submission as a pre-grant artifact. N
 Detailed deliverable list per phase in [docs/whitepaper.md](./docs/whitepaper.md).
 
 ---
-
-## Target competitions
-
-The grant explicitly supports student participation in competitions. Hatch will be submitted to:
-
-- **James Dyson Award** (Singapore national + international rounds)
-- **IEEE R10 Humanitarian Technology Conference** (student paper track)
-- **Asia Smart App Challenge** (IoT / health track)
-- **NTU President's Entrepreneurship Award** (if Y2 status allows)
-- **NEA innovation challenges** (when open)
-
-Tailored submission outlines in [docs/competition-brief.md](./docs/competition-brief.md).
-
----
-
-## Open source commitment
-
-On successful field validation, this repository will be released under MIT (firmware, ML pipeline, dashboard) and CERN-OHL-W (hardware). The Singapore-specific field-recorded mosquito audio dataset will be released under CC-BY 4.0, contributing back to the global mosquito-acoustic research community whose work this project builds upon.
-
----
-
-## About the applicant
-
-NTU College of Engineering Y1 student, EEE primary with Entrepreneurship as second major. This proposal is a solo application within the ENGenious Sparks Grant guidelines.
-
-The project deliberately stays within the scope an individual Y1 can credibly execute over 12 months: the technical novelty sits in the *system design* (multi-modal fusion + conditional inference + breeding-site placement), not in cutting-edge ML research that would require a lab of postdocs. Every claim in this document maps to a citation in the literature review or a working artifact in this repo.
-
----
-
-## License
-
-To be confirmed at first stable release. Intent: MIT for software, CERN-OHL-W for hardware, CC-BY 4.0 for the field dataset.
