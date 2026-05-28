@@ -8,7 +8,7 @@
 
 ---
 
-## The 60-second pitch
+## Summary
 
 Singapore's dengue surveillance is among the most sophisticated in the world. NEA operates 64,000+ Gravitraps, runs the Wolbachia release program, performs source-reduction inspections, and maintains GIS-based risk maps. **And it still recorded 13,655 dengue cases and 17 deaths in 2024.**
 
