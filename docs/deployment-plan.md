@@ -114,16 +114,6 @@ Node positions are recorded in the backend at install-time and never broadcast i
 
 Each node site has a small printed label on the enclosure with a QR code linking to a public information page describing the project, the data policy, and a contact email for queries.
 
-### Approvals checklist
-
-- [ ] NTU Office of Estates Management permission letter (Phase 2)
-- [ ] Town Council formal MOU (Phase 2)
-- [ ] NTU IRB consultation (likely not required since no human-subjects research, but to be confirmed in Phase 1)
-- [ ] Hall/Block management consent letters where applicable
-- [ ] Signed faculty mentor advisor agreement
-- [ ] NEA awareness notification (Phase 2)
-
----
 
 ## 6. Risk-aware deployment principles
 
