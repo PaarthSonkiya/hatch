@@ -14,7 +14,7 @@ Singapore's dengue surveillance is among the most sophisticated in the world. NE
 
 The structural reason: existing tools **count adult mosquitoes after they have emerged.** Gravitraps sample weekly. An *Aedes aegypti* egg becomes a biting adult in 5–7 days under Singapore's climate. By the time a hotspot is flagged, the next generation is already biting.
 
-Hatch is a low-cost edge sensor designed to live *at the breeding site itself* — drains, void-deck planters, bin centres, rooftop gutters — and flag a stagnant water collection *before* the adults emerge. It uses two sensing modes:
+THis is why I built Hatch, a low-cost edge sensor designed to live *at the breeding site itself* like drains, void-deck planters, bin centres, rooftop gutters and flag a stagnant water collection *before* the adults emerge. It uses two sensing modes:
 
 1. **Environmental Watch (always-on, ~50 μA):** capacitive water presence + stagnation timer + temperature/humidity → on-device breeding-favorability score.
 2. **Acoustic Confirmation (triggered, TinyML):** when conditions favor breeding, the node wakes a MEMS microphone and runs a quantized 1D-CNN trained on the HumBug wingbeat corpus to confirm Aedes activity nearby.
