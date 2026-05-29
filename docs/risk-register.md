@@ -189,8 +189,6 @@ This register catalogues risks identified during pre-grant design work, scored b
 **Mitigation.**
 1. Each phase has a single deliverable gate, not a continuous flow of dependencies. Slippage in one phase does not cascade.
 2. The most labour-intensive phases (Phase 2: hardware iteration; Phase 3: field study) are scheduled in periods that align with the academic calendar (winter break and summer break).
-3. Pre-grant work has already completed the design and research stages. Grant-funded work is build-and-deploy, not design.
-4. The applicant has not under-scoped: a single-modal acoustic-only version of the project would be ~50% the engineering work; Exuvia's environmental sensing adds workload but also adds graceful-failure capability.
 
 ### R3.2 — Mentor / faculty advisor non-availability
 
@@ -208,36 +206,12 @@ This register catalogues risks identified during pre-grant design work, scored b
 3. Multiple departments could provide a mentor (EEE, CSE, SBS); failure of one path does not block the project.
 4. NTU's Centre for Information Technology Services and various student-research support offices provide secondary advisory channels.
 
-### R3.3 — Grant funds released later than expected
-
-| Field | Value |
-|---|---|
-| Likelihood | L |
-| Impact | L |
-| Score | 1/9 |
-
-**Description.** Administrative delays in disbursement could shift the start of Phase 1.
 
 **Mitigation.**
 1. Phase 1 work (firmware on existing development boards, ML pipeline) can be performed with personal-equipment and zero hardware purchase. Limited progress is possible even before funds clear.
 2. The phased structure means the largest single purchase (10-node hardware run) is in Phase 2, not Phase 1.
 
-### R3.4 — Competition non-submission
 
-| Field | Value |
-|---|---|
-| Likelihood | L |
-| Impact | L |
-| Score | 1/9 |
-
-**Description.** The grant explicitly supports competition participation. Failing to submit to any competition would undercut a key grant objective.
-
-**Mitigation.**
-1. Five competition targets are pre-identified (see [competition-brief.md](./competition-brief.md)) so missing one does not eliminate the option.
-2. James Dyson Award has annual deadlines compatible with project timeline.
-3. The repository structure (whitepaper, dashboard, working firmware) is designed to be directly reusable as competition submission material.
-
----
 
 ## 4. Residual risk
 
@@ -246,7 +220,7 @@ After all mitigations, the project's residual risk profile is **low-medium**. Th
 - **Enclosure ingress (R1.3)** — the only "silent failure" mode that could meaningfully damage outcomes. Mitigations are aggressive but field validation in Phase 2 is the only true test.
 - **Town council non-engagement (R2.1)** — the only risk that could materially constrain the demonstration scope, though the technical scope is preserved by the all-NTU fallback.
 
-No risk in this register threatens the project's existence. The system is designed with graceful failure modes throughout, and the pre-grant work has eliminated all design risk: the grant funds execution of an already-designed system.
+No risk in this register threatens the project's existence. The system is designed with graceful failure modes throughout.
 
 ---
 
@@ -254,7 +228,7 @@ No risk in this register threatens the project's existence. The system is design
 
 This register is reviewed at:
 
-- End of each phase (4 reviews during grant)
+- End of each phase 
 - Any time a risk's likelihood or impact is observed to change
 - Any time a new risk is identified
 
