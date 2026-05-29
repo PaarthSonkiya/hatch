@@ -6,16 +6,16 @@ This document catalogues the prior work most relevant to Exuvia's design, groupe
 
 ---
 
-## A. Acoustic mosquito identification — foundational work
+## A. Acoustic mosquito identification (foundational work)
 
-### A1. Mukundarajan et al. (2017) — Using mobile phones as acoustic sensors for high-throughput mosquito surveillance
+### A1. Mukundarajan et al. (2017)— Using mobile phones as acoustic sensors for high-throughput mosquito surveillance
 *eLife*, 2017. DOI: 10.7554/eLife.27854.
 
 Demonstrates that commodity smartphone microphones can capture mosquito wingbeat acoustic signatures with sufficient SNR for species identification. Recorded wingbeats of 20+ species in controlled conditions and validated discriminative power of wingbeat frequency + harmonics. Established the basic feasibility of low-cost acoustic mosquito surveillance.
 
-*Relevance to Exuvia:* establishes that low-cost MEMS microphones can capture useful Aedes wingbeat signals — a load-bearing assumption for the project's acoustic stage.
+*Relevance to Exuvia:* establishes that low-cost MEMS microphones can capture useful Aedes wingbeat signals, a load-bearing assumption for the project's acoustic stage.
 
-### A2. Sinka et al. (2021) — HumBug: An acoustic mosquito monitoring tool for use on budget smartphones
+### A2. Sinka et al. (2021)— HumBug: An acoustic mosquito monitoring tool for use on budget smartphones
 *Methods in Ecology and Evolution*, 12(10). DOI: 10.1111/2041-210X.13663.
 
 Describes the HumBug system, a budget-smartphone-based acoustic mosquito monitoring pipeline developed by Oxford. The associated HumBug Zooniverse dataset is the largest public corpus of wild-caught mosquito recordings (6,900+ individuals, six genera including Aedes, Anopheles, Culex).
