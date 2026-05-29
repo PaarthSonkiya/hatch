@@ -1,4 +1,4 @@
-# Hatch — Technical Whitepaper
+# Exuvia— Technical Whitepaper
 
 **A multi-modal edge-AI sensor network for proactive *Aedes aegypti* breeding-site detection in Singapore's HDB environment.**
 
@@ -8,7 +8,7 @@
 
 ## 1. Problem statement
 
-### 1.1 Dengue in Singapore — the data
+### 1.1 Dengue in Singapore 
 
 Dengue is endemic in Singapore. Despite one of the most aggressive vector-control programmes in the world, the country has experienced repeated multi-thousand-case outbreaks throughout the last decade, with a record 35,315 cases in 2020 and 13,655 cases with 17 fatalities in 2024. A systematic review of the disease's economic burden estimated total costs of SGD 148 million across the 2010–2020 period. The 2025 case count has dropped to roughly 4,000 — but public-health authorities have publicly warned that a shift in the dominant viral serotype (toward DENV-3, for example) could trigger another major outbreak in subsequent years.
 
@@ -32,7 +32,7 @@ The programme has one structural limitation that any added sensing capability co
 
 Under Singapore's tropical conditions, the *Ae. aegypti* life cycle from egg to biting adult can be completed in **5 to 7 days** depending on temperature. A surveillance system with a weekly cadence is, by construction, one generation behind the breeding event. By the time a Gravitrap signal flags an elevated index in a zone, the adults producing the signal have likely already laid the next batch of eggs.
 
-What is structurally missing is a **continuous, hyper-local, breeding-site-level signal** that detects favorable breeding conditions in the day-to-day rather than week-to-week — and that, ideally, *confirms* the favorable conditions are actually attracting Aedes activity. This is the gap Hatch is designed to close.
+What is structurally missing is a **continuous, hyper-local, breeding-site-level signal** that detects favorable breeding conditions in the day-to-day rather than week-to-week — and that, ideally, *confirms* the favorable conditions are actually attracting Aedes activity. This is the gap Exuvia is designed to close.
 
 ---
 
@@ -42,7 +42,7 @@ What is structurally missing is a **continuous, hyper-local, breeding-site-level
 
 Most prior work in automated mosquito surveillance treats acoustic detection — classifying species from wingbeat sounds — as the primary signal. This has a known failure mode: outdoor environments are acoustically noisy. Wind, traffic, air-conditioner condensers, household electronics, human voices, and other insects all contribute background that degrades classifier performance. Recent work like MosquitoSong+ (2024) has made noise-robustness a research focus precisely because of this issue.
 
-Hatch's key design insight is to **invert the signal hierarchy**. The primary signal is *environmental*: is there water here, has it been stagnant long enough, is the temperature in the Aedes breeding range? The acoustic signal is *secondary*: given that the environmental conditions are right, does a microphone in the area pick up wingbeat activity that resembles *Aedes*?
+Exuvia's key design insight is to **invert the signal hierarchy**. The primary signal is *environmental*: is there water here, has it been stagnant long enough, is the temperature in the Aedes breeding range? The acoustic signal is *secondary*: given that the environmental conditions are right, does a microphone in the area pick up wingbeat activity that resembles *Aedes*?
 
 This inversion has three consequences:
 
@@ -52,7 +52,7 @@ This inversion has three consequences:
 
 ### 2.2 Sensing modalities
 
-A Hatch node integrates the following sensors:
+A Exuvia node integrates the following sensors:
 
 | Modality | Sensor | What it tells us |
 |---|---|---|
@@ -208,7 +208,7 @@ Phase 3 deploys 10 nodes across two contrasting environments:
 - **Cluster A (5 nodes): NTU campus.** Specifically the drainage channels around residential halls and the EEE block. Provides easy physical access for maintenance, controlled stakeholder relationships, and a known low-baseline dengue area for false-positive characterisation.
 - **Cluster B (5 nodes): adjacent HDB estate.** A neighbourhood in the immediate vicinity of NTU (Jurong West / Pioneer) where the applicant can credibly engage with the town council and where adult Aedes are known from NEA's published Gravitrap data. This cluster tests the system in operationally relevant conditions.
 
-Each node is co-located with an existing NEA Gravitrap where possible — not to replace it, but to enable direct comparison of Hatch's site-level alerts against the Gravitrap Aedes Index at that location.
+Each node is co-located with an existing NEA Gravitrap where possible — not to replace it, but to enable direct comparison of Exuvia's site-level alerts against the Gravitrap Aedes Index at that location.
 
 ### 5.2 Success metrics
 
@@ -247,7 +247,7 @@ A full risk register lives in [/docs/risk-register.md](./risk-register.md). The 
 
 ### 6.1 The graceful-failure property
 
-A meaningful design property of the Hatch system: even if the acoustic ML stage performs poorly in the field, the environmental-only signal is independently useful. A node that reliably reports "this drain has had standing water for 5 days at 28°C" is *already* a deployable source-reduction tool for town councils, with or without acoustic confirmation. This is what reduces the project's overall execution risk: the most uncertain technical component (field ML performance) is not on the critical path to demonstrable value.
+A meaningful design property of the Exuvia system: even if the acoustic ML stage performs poorly in the field, the environmental-only signal is independently useful. A node that reliably reports "this drain has had standing water for 5 days at 28°C" is *already* a deployable source-reduction tool for town councils, with or without acoustic confirmation. This is what reduces the project's overall execution risk: the most uncertain technical component (field ML performance) is not on the critical path to demonstrable value.
 
 ---
 
@@ -255,7 +255,7 @@ A meaningful design property of the Hatch system: even if the acoustic ML stage 
 
 The grant evaluates proposals on six criteria. Mapping them explicitly to this project:
 
-**Alignment with grant objectives — addresses real-world problems (17.5%).** Dengue is a recurring national public-health priority. Singapore's existing programme is sophisticated but has a documented structural gap (weekly cadence vs. 5–7 day breeding cycle). Hatch addresses this directly.
+**Alignment with grant objectives — addresses real-world problems (17.5%).** Dengue is a recurring national public-health priority. Singapore's existing programme is sophisticated but has a documented structural gap (weekly cadence vs. 5–7 day breeding cycle). Exuvia addresses this directly.
 
 **Alignment — meaningful and positive impact (17.5%).** A successful field study would produce both a working sensor system and a Singapore-specific labelled mosquito-acoustic dataset, which would be released to the research community. Even partial success has clear operational value to town councils.
 
@@ -271,7 +271,7 @@ The grant evaluates proposals on six criteria. Mapping them explicitly to this p
 
 ## 8. Beyond the grant
 
-If the field study validates the approach, the realistic next steps — for which Hatch is *not* requesting grant funding — include:
+If the field study validates the approach, the realistic next steps — for which Exuvia is *not* requesting grant funding — include:
 
 - Engagement with NEA's Environmental Health Institute for a larger-scale pilot.
 - Partnership with one or more HDB town councils for an estate-wide deployment.
