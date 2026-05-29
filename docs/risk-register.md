@@ -1,6 +1,6 @@
 # Risk Register
 
-**Hatch — Itemised technical, operational, and programmatic risks with mitigations.**
+**Exuvia— Itemised technical, operational, and programmatic risks with mitigations.**
 
 This register catalogues risks identified during pre-grant design work, scored by likelihood (L: Low / M: Medium / H: High) and impact (L / M / H), with explicit mitigation strategies. Risks are reviewed at every phase gate.
 
@@ -190,7 +190,7 @@ This register catalogues risks identified during pre-grant design work, scored b
 1. Each phase has a single deliverable gate, not a continuous flow of dependencies. Slippage in one phase does not cascade.
 2. The most labour-intensive phases (Phase 2: hardware iteration; Phase 3: field study) are scheduled in periods that align with the academic calendar (winter break and summer break).
 3. Pre-grant work has already completed the design and research stages. Grant-funded work is build-and-deploy, not design.
-4. The applicant has not under-scoped: a single-modal acoustic-only version of the project would be ~50% the engineering work; Hatch's environmental sensing adds workload but also adds graceful-failure capability.
+4. The applicant has not under-scoped: a single-modal acoustic-only version of the project would be ~50% the engineering work; Exuvia's environmental sensing adds workload but also adds graceful-failure capability.
 
 ### R3.2 — Mentor / faculty advisor non-availability
 
