@@ -4,7 +4,7 @@
 
 > *Catch breeding sites before they hatch.*
 
-[Landing page](./landing/index.html) · [Whitepaper](./docs/whitepaper.md) · [Literature review](./docs/literature-review.md) · [Firmware](./firmware/) · [ML pipeline](./ml/) · [Dashboard](./dashboard/) · [Hardware BOM](./hardware/bom.md)
+[Landing page](index.html) · [Whitepaper](./docs/whitepaper.md) · [Literature review](./docs/literature-review.md) · [Firmware](./firmware/) · [ML pipeline](./ml/) · [Dashboard](./dashboard/) · [Hardware BOM](./hardware/bom.md)
 
 ---
 
