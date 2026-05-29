@@ -1,8 +1,6 @@
 # Field Deployment Plan
 
-**Hatch — Phase 3 pilot study, Singapore.**
-
-This document describes the operational plan for the 10-node field study that constitutes Phase 3 of the Hatch grant proposal. It covers site selection, stakeholder engagement, installation logistics, data handling, and ethics.
+**Exuvia- Phase 3 pilot study, Singapore.**
 
 ---
 
@@ -65,7 +63,7 @@ The exact addresses are deliberately not listed in this public document; site-le
 - **Office of Estates Management:** notify by Phase 2; obtain formal permission for sensor installation on campus property. Provide one-page system description and the data-handling policy.
 - **Hall management:** notify the relevant hall masters for any node sited near a residence.
 - **EEE Programme leadership:** notify the Associate Chair (Students) and proposed faculty mentor as a courtesy; obtain a soft letter of awareness if requested.
-- **Sustainability and Smart Campus initiatives:** flag the project early — Hatch fits both portfolios and they may be willing to publicise it.
+- **Sustainability and Smart Campus initiatives:** flag the project early,so Exuvia fits both portfolios and they may be willing to publicise it.
 
 ### External side
 
