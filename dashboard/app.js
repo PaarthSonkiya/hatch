@@ -1,5 +1,5 @@
 // ============================================================================
-//  HATCH operator console — app.js
+//  Exuvia operator console — app.js
 //  Mock data + interactive map + node detail panel.
 //  In production: data comes from the TimescaleDB REST API. This prototype
 //  uses a deterministic synthetic dataset so the demo is reproducible.
