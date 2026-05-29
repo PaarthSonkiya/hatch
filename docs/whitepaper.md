@@ -2,8 +2,6 @@
 
 **A multi-modal edge-AI sensor network for proactive *Aedes aegypti* breeding-site detection in Singapore's HDB environment.**
 
-*Pre-grant technical document, NTU ENGenious Sparks Grant 2026.*
-
 ---
 
 ## 1. Problem statement
@@ -251,25 +249,7 @@ A meaningful design property of the Exuvia system: even if the acoustic ML stage
 
 ---
 
-## 7. Why this fits the ENGenious Sparks rubric
-
-The grant evaluates proposals on six criteria. Mapping them explicitly to this project:
-
-**Alignment with grant objectives — addresses real-world problems (17.5%).** Dengue is a recurring national public-health priority. Singapore's existing programme is sophisticated but has a documented structural gap (weekly cadence vs. 5–7 day breeding cycle). Exuvia addresses this directly.
-
-**Alignment — meaningful and positive impact (17.5%).** A successful field study would produce both a working sensor system and a Singapore-specific labelled mosquito-acoustic dataset, which would be released to the research community. Even partial success has clear operational value to town councils.
-
-**Originality and creativity — originality and feasibility (17.5%).** Each component of the system has prior art, but the **fusion** of breeding-site placement + environmental-gated conditional acoustic inference + integration with the source-reduction workflow has not been published. The literature review documents this systematically.
-
-**Originality — innovative and ground-breaking (17.5%).** The "ML as confirmation, not primary signal" architectural pattern, combined with environmental gating for power efficiency, is the principal engineering contribution. It is a system-design innovation, not a novel-ML-research claim, which is appropriate for a solo Y1 applicant.
-
-**Feasibility — realistic milestones (15%).** Twelve months, four phases, each gated by a demonstrable outcome. The first three phases use commodity components and open datasets; deep-tech research dependencies are minimised.
-
-**Feasibility — efficient and prudent use of grant (15%).** SGD 10,000 is dimensioned to ten field nodes plus gateway, with hardware accounting for ~28% of the budget, PCB and enclosure development for ~20%, lab/test/cloud for ~15%, competition+travel for ~14%, and 10% contingency. No category is overweight; the dominant spend is field hardware, which is the right place for the money under this grant's framing.
-
----
-
-## 8. Beyond the grant
+## 7. Beyond the Funding
 
 If the field study validates the approach, the realistic next steps — for which Exuvia is *not* requesting grant funding — include:
 
@@ -279,12 +259,4 @@ If the field study validates the approach, the realistic next steps — for whic
 - Open-source release of all firmware, hardware, ML pipeline, and validated dataset.
 - A peer-reviewed publication targeting a venue such as IEEE Sensors Journal, ACM SenSys, or BMC Public Health.
 
-The grant funds the *demonstration*. Everything past that is the founder/researcher's own work.
-
----
-
-## 9. Author note
-
-This whitepaper, like everything else in this repository, was prepared as **pre-grant work**. The author — a Y1 EEE student at NTU with a second major in Entrepreneurship — committed to building the technical foundation before submission so that the proposal is not a sketch but a system that has already been designed in detail and is ready to be built once the hardware budget arrives.
-
-The grant amount is requested specifically to *execute* what has already been *designed*. The novelty of the design has been bounded carefully against published prior art; the system is buildable from components that are commercially available today; and the failure modes have been catalogued before, not after, the work begins.
+The grant funds the *demonstration*. Everything past that is my own work.
